@@ -1,1 +1,21 @@
-/* Variáveis CSS */
+:root {
+  /* Paleta de Cores Elegante */
+  --bg-color: #f6eeec; /* Fundo beje/rosado claro */
+  --text-dark: #1b1b1b; /* Cinza bem escuro para textos */
+  --text-mid: #4a4a4a; /* Cinza médio para descrições */
+  --text-light: #fdfaf9; /* Texto claro para sobreposições escuras */
+  
+  --btn-bg-light: #fcf8f7; /* Fundo do botão no desktop */
+  --btn-border-light: #eaddd8; /* Borda sutil do botão no desktop */
+  --btn-bg-dark: #2a2a2a; /* Fundo escuro do botão no mobile */
+  --btn-border-dark: #1a1a1a;
+  
+  --accent-star: #2a2a2a; /* Cor da estrela */
+  
+  /* Tipografia */
+  --font-serif: 'Playfair Display', 'Times New Roman', serif;
+  --font-sans: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+  
+  /* Breakpoints */
+  --bp-mobile: 768px;
+}

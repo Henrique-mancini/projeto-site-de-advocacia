@@ -1,1 +1,26 @@
-/* Todo: Home styles */
+.homeLayout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  /* Uma leve textura radial para background bege/rosado que simula a textura */
+  background: radial-gradient(circle at center, rgba(234, 221, 216, 0.4) 0%, transparent 60%);
+}
+
+/* Fundo adicional que simula os padrões de folhas delicados através de pseudo elementos se necessário */
+.homeLayout::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  /* Como não temos imagem real, usamos um mix blend suave */
+  background: url('/background-texture.png') center/cover no-repeat;
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}

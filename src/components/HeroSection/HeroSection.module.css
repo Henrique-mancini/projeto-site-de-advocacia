@@ -1,1 +1,124 @@
-/* Todo: HeroSection styles */
+.heroSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  min-height: calc(100vh - 80px); /* Ajuste de altura */
+}
+
+.contentArea {
+  flex: 1;
+  max-width: 650px;
+  padding-right: 2rem;
+}
+
+.introWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinhamento à esquerda (Imagem 1) */
+  text-align: left;
+}
+
+.title {
+  font-size: 3.5rem;
+  color: var(--text-dark);
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.05em;
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Detalhe sutil abaixo do título visto na imagem 1 */
+.title::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.15), transparent);
+  margin-top: 15px;
+  position: relative;
+}
+
+.title::before {
+  content: '✧';
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: var(--text-mid);
+}
+
+.description {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--text-mid);
+  margin-bottom: 3rem;
+  max-width: 550px;
+  font-weight: 300;
+}
+
+.imageArea {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.imageWrapper {
+  width: 100%;
+  max-width: 480px;
+  /* Soft shadow / border se necessário */
+}
+
+.profileImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Media Query: Mobile (Imagem 2) */
+@media (max-width: 992px) {
+  .heroSection {
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem 1rem;
+    min-height: auto;
+  }
+
+  .contentArea {
+    width: 100%;
+    max-width: 100%;
+    padding-right: 0;
+    margin-bottom: 2rem;
+  }
+
+  .introWrapper {
+    align-items: center; /* Centraliza no mobile */
+    text-align: center;
+  }
+
+  .title {
+    font-size: 2.8rem;
+    white-space: normal;
+  }
+
+  .description {
+    margin: 0 auto 2.5rem auto;
+    max-width: 600px;
+  }
+
+  .imageArea {
+    /* Esconde a foto centralizando no mobile para focar no design limpo da img 2 */
+    display: none; 
+  }
+}
+
+@media (max-width: 576px) {
+  .title {
+    font-size: 2.2rem;
+  }
+}

@@ -1,1 +1,33 @@
-/* Todo: Header styles */
+.header {
+  width: 100%;
+  padding: 1.5rem 0;
+  background-color: transparent;
+  display: none; /* Oculto no desktop para replicar a Imagem 1 */
+}
+
+.nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.nav a {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  color: var(--text-mid);
+  transition: color 0.3s ease;
+}
+
+.nav a:hover {
+  color: var(--text-dark);
+}
+
+/* Media Query: Aparece no Mobile como na Imagem 2 */
+@media (max-width: 768px) {
+  .header {
+    display: block;
+    position: relative;
+    z-index: 10;
+  }
+}
