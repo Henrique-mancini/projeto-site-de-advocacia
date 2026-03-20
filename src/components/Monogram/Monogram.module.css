@@ -1,7 +1,7 @@
 .monogramContainer {
   margin-bottom: 1.5rem;
   display: flex;
-  justify-content: flex-start; /* Desktop: esquerda */
+  justify-content: center; /* Desktop: centralizado */
 }
 
 /* Base estilizada simulando os ramos e iniciais */
