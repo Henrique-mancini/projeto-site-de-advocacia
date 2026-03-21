@@ -1,0 +1,50 @@
+.card {
+  background-color: var(--btn-bg-light, #fcf8f7);
+  border: 1px solid var(--btn-border-light, #eaddd8);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08); /* Sombra mais profunda */
+}
+
+/* Link ocupa 100% da área, tornando o cartão inteiramente clicável */
+.link {
+  display: block;
+  padding: 2rem;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
+}
+
+.date {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  color: var(--text-mid);
+  margin-bottom: 1.5rem;
+}
+
+.summary {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--text-mid);
+  margin: 0;
+  line-height: 1.6;
+}

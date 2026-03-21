@@ -1,15 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import styles from './ArticleCard.module.css';
 
 const ArticleCard = ({ id, title, summary, date }) => {
   return (
-    <article>
-      <Link to={`/artigos/${id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+    <article className={styles.card}>
+      <Link to={`/artigos/${id}`} className={styles.link}>
         <header>
-          <h2>{title}</h2>
-          <time dateTime={date}>{date}</time>
+          <h2 className={styles.title}>{title}</h2>
+          <time dateTime={date} className={styles.date}>{date}</time>
         </header>
-        <p>{summary}</p>
+        <p className={styles.summary}>{summary}</p>
       </Link>
     </article>
   );
