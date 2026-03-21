@@ -58,48 +58,5 @@
   .button {
     width: 100%;
     max-width: 380px;
-    background-color: var(--btn-bg-dark);
-    border: 1px solid var(--btn-border-dark);
-    color: var(--text-light);
-    border-radius: 12px; /* Pílula arredondada retangular */
-    padding: 1.2rem;
-    position: relative;
-    box-shadow: none;
-  }
-
-  .button:hover {
-    background-color: #1a1a1a;
-    transform: none; /* remove hover move no mobile */
-  }
-
-  .iconRight {
-    display: none; /* Remove a setinha da direita no mobile */
-  }
-
-  /* Adiciona a estrela decorativa superior estilo tag */
-  .button::before {
-    content: '★';
-    display: inline-block;
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.9rem;
-    color: var(--text-dark); /* Cor escura que contrasta c/ fundo se vazar, ou estrela em cima? */
-    background: var(--bg-color); /* Circulo ao redor da estrela p destacar */
-    border-radius: 50%;
-    padding: 0 4px;
-  }
-  
-  /* Adiciona colchetes [ texto ] */
-  .buttonText::before {
-    content: '[ ';
-    color: rgba(255,255,255,0.5);
-    margin-right: 5px;
-  }
-  .buttonText::after {
-    content: ' ]';
-    color: rgba(255,255,255,0.5);
-    margin-left: 5px;
   }
 }
