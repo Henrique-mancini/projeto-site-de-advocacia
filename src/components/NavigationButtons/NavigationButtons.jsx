@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import styles from './NavigationButtons.module.css';
 
 const NavigationButtons = () => {
+  const navigate = useNavigate();
+
   return (
     <nav className={styles.navButtons} aria-label="Links rápidos">
       <ul className={styles.buttonList}>
@@ -11,7 +14,7 @@ const NavigationButtons = () => {
           </button>
         </li>
         <li>
-          <button className={styles.button} type="button">
+          <button className={styles.button} type="button" onClick={() => navigate('/artigos')}>
             <span className={styles.buttonText}>ARTIGOS E TEXTOS</span>
             <span className={styles.iconRight} aria-hidden="true">&rsaquo;</span>
           </button>
