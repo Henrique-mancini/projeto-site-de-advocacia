@@ -8,7 +8,7 @@ const NavigationButtons = () => {
     <nav className={styles.navButtons} aria-label="Links rápidos">
       <ul className={styles.buttonList}>
         <li>
-          <button className={styles.button} type="button">
+          <button className={styles.button} type="button" onClick={() => navigate('/sobre-mim')}>
             <span className={styles.buttonText}>SOBRE MIM</span>
             <span className={styles.iconRight} aria-hidden="true">&rsaquo;</span>
           </button>
