@@ -13,8 +13,8 @@ function App() {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
         <Route path="/artigos" element={<Articles />} />
-        <Route path="/about-me" element={<AboutMe />} />
-        <Route path="/academic-evolution" element={<AcademicEvolution />} />
+        <Route path="/sobre-mim" element={<AboutMe />} />
+        <Route path="/evolucao-academica" element={<AcademicEvolution />} />
       </Routes>
     </AnimatePresence>
   );

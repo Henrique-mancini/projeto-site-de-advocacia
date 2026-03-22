@@ -8,7 +8,7 @@ const NavigationButtons = () => {
     <nav className={styles.navButtons} aria-label="Links rápidos">
       <ul className={styles.buttonList}>
         <li>
-          <button className={styles.button} type="button" onClick={() => navigate('/about-me')}>
+          <button className={styles.button} type="button" onClick={() => navigate('/sobre-mim')}>
             <span className={styles.buttonText}>SOBRE MIM</span>
             <span className={styles.iconRight} aria-hidden="true">&rsaquo;</span>
           </button>
@@ -20,7 +20,7 @@ const NavigationButtons = () => {
           </button>
         </li>
         <li>
-          <button className={styles.button} type="button" onClick={() => navigate('/academic-evolution')}>
+          <button className={styles.button} type="button" onClick={() => navigate('/evolucao-academica')}>
             <span className={styles.buttonText}>EVOLUÇÃO ACADÊMICA</span>
             <span className={styles.iconRight} aria-hidden="true">&rsaquo;</span>
           </button>
