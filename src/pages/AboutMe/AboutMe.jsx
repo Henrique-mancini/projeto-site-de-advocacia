@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import styles from './SobreMim.module.css';
+import styles from './AboutMe.module.css';
+import mbPicture from '../../assets/MB_Picture.jpeg';
 
 const pageVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -12,7 +13,7 @@ const pageVariants = {
   exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
 };
 
-const SobreMim = () => {
+const AboutMe = () => {
   return (
     <motion.main
       className={styles.container}
@@ -39,9 +40,8 @@ const SobreMim = () => {
 
         <section className={styles.imageContent}>
           <div className={styles.imagePlaceholder}>
-            {/* Placeholder estrutural para a fotografia */}
             <img 
-              src="https://via.placeholder.com/500x600?text=Sua+Foto+Aqui" 
+              src={mbPicture} 
               alt="Fotografia do Advogado" 
               className={styles.image}
             />
@@ -52,4 +52,4 @@ const SobreMim = () => {
   );
 };
 
-export default SobreMim;
+export default AboutMe;

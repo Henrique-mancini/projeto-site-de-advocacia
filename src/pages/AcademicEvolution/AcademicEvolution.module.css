@@ -1,0 +1,137 @@
+.container {
+  min-height: 100vh;
+  padding: 4rem 2rem;
+  background-color: var(--bg-color); /* Fundo bege/rosa claro em todo o bloco */
+}
+
+.pageTitle {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 4rem;
+  color: var(--text-dark);
+}
+
+/* Container da timeline em si */
+.timeline {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Linha central */
+.timeline::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  background-color: #d1c5c0; /* Cinza médio puxado ao quente */
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  margin-left: -1px;
+}
+
+.timelineItem {
+  padding: 10px 40px;
+  position: relative;
+  background-color: inherit;
+  width: 50%;
+  box-sizing: border-box;
+}
+
+/* Itens da esquerda */
+.timelineItem:nth-child(odd) {
+  left: 0;
+  text-align: right;
+}
+
+/* Itens da direita */
+.timelineItem:nth-child(even) {
+  left: 50%;
+}
+
+/* As bolinhas (marcadores) na linha central */
+.timelineItem::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  right: -8px;
+  background-color: var(--bg-color);
+  border: 4px solid var(--text-dark);
+  top: 15px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Ajusta o marcador para caixas do lado direito ficarem alinhadas ao centro */
+.timelineItem:nth-child(even)::after {
+  left: -8px;
+}
+
+/* Cartão com o conteúdo */
+.timelineContent {
+  padding: 1.5rem 2rem;
+  background-color: #ffffff; /* Fundo branco pra destacar do background rosinha */
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Sombra elegante */
+}
+
+.year {
+  display: block;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.itemTitle {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  color: var(--text-mid);
+  line-height: 1.6;
+}
+
+/* =========================================
+   Mobile View (Max-width)
+========================================= */
+@media screen and (max-width: 768px) {
+  /* Linha vai pra esquerda e não mais no centro */
+  .timeline::after {
+    left: 20px;
+  }
+  
+  .timelineItem {
+    width: 100%;
+    padding-left: 50px;
+    padding-right: 0;
+    text-align: left;
+  }
+  
+  /* Retira o deslocamento da esquerda em todos */
+  .timelineItem:nth-child(odd),
+  .timelineItem:nth-child(even) {
+    left: 0;
+  }
+  
+  /* Marcadores alocados na nova posição da linha */
+  .timelineItem::after,
+  .timelineItem:nth-child(even)::after {
+    left: 12px;
+  }
+
+  /* Padding menor no celular para aproveitar melhor a tela */
+  .timelineContent {
+    padding: 1rem 1.25rem;
+  }
+
+  .pageTitle {
+    font-size: 2.25rem;
+    margin-bottom: 3rem;
+  }
+}

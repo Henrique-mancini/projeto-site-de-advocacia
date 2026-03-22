@@ -1,7 +1,7 @@
 /* Desktop First Style */
 .container {
   min-height: 100vh;
-  background-color: #FAF6F0; /* Bege/rosa claro */
+  background-color: var(--bg-color); /* Bege/rosa claro padronizado */
   color: #333333; /* Texto cinza escuro */
   display: flex;
   align-items: center;
