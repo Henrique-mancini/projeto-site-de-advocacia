@@ -20,7 +20,7 @@ const ArticleDetail = () => {
     const fetchArticle = async () => {
       try {
         const data = await sanityClient.fetch(
-          '*[_type == "article" && slug.current == $slug][0]',
+          '*[_type == "article" && slug.current == $slug][0]{..., "pdfUrl": pdfFile.asset->url}',
           { slug }
         );
         setArticle(data);
@@ -93,6 +93,17 @@ const ArticleDetail = () => {
       <article className={styles.body}>
         {article.body && <PortableText value={article.body} />}
       </article>
+
+      {article.pdfUrl && (
+        <a
+          href={article.pdfUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.pdfButton}
+        >
+          Baixar Artigo Oficial (PDF)
+        </a>
+      )}
     </motion.div>
   );
 };
