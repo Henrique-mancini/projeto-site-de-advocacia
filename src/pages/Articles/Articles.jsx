@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ArticleCard from '../../components/ArticleCard/ArticleCard';
+import { sanityClient } from '../../services/sanity';
 import styles from './Articles.module.css';
 
 const containerVariants = {
@@ -17,27 +18,22 @@ const containerVariants = {
 };
 
 const Articles = () => {
-  // Array interno com três objetos de mockups jurídicos
-  const articlesMock = [
-    {
-      id: 1,
-      title: 'A Nova Lei de Proteção de Dados',
-      summary: 'Entenda os principais impactos da LGPD nas pequenas e médias empresas do Brasil e como adequar o seu negócio.',
-      date: '10 de Outubro de 2026',
-    },
-    {
-      id: 2,
-      title: 'Direitos Trabalhistas em Tempos de Home Office',
-      summary: 'Uma análise detalhada sobre as responsabilidades do empregador e os direitos essenciais do teletrabalhador moderno.',
-      date: '15 de Setembro de 2026',
-    },
-    {
-      id: 3,
-      title: 'Contratos Civis: Evitando Armadilhas Comuns',
-      summary: 'Saiba quais cláusulas são fundamentais para garantir a segurança jurídica em negociações e parcerias empresariais.',
-      date: '02 de Agosto de 2026',
-    },
-  ];
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const data = await sanityClient.fetch(
+          '*[_type == "article"] | order(publishedAt desc)'
+        );
+        setArticles(data);
+      } catch (error) {
+        console.error('Erro ao buscar artigos:', error);
+      }
+    };
+
+    fetchArticles();
+  }, []);
 
   return (
     <motion.main 
@@ -53,14 +49,17 @@ const Articles = () => {
       </header>
       
       <section className={styles.grid}>
-        {/* Renderização da lista de artigos varrendo o array */}
-        {articlesMock.map((article) => (
+        {articles.map((article) => (
           <ArticleCard
-            key={article.id} // Propriedade React obrigatória em mapeamentos
-            id={article.id}
+            key={article._id}
+            id={article.slug?.current}
             title={article.title}
             summary={article.summary}
-            date={article.date}
+            date={new Date(article.publishedAt).toLocaleDateString('pt-BR', {
+              day: '2-digit',
+              month: 'long',
+              year: 'numeric',
+            })}
           />
         ))}
       </section>
@@ -69,3 +68,4 @@ const Articles = () => {
 };
 
 export default Articles;
+
