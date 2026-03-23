@@ -5,6 +5,27 @@
   color: var(--text-dark);
 }
 
+/* Botão de voltar */
+.backLink {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text-mid);
+  text-decoration: none;
+  margin-bottom: 2.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--btn-border-light);
+  border-radius: 6px;
+  background: var(--btn-bg-light);
+  transition: all 0.25s ease;
+}
+
+.backLink:hover {
+  color: var(--text-dark);
+  border-color: var(--text-mid);
+  transform: translateX(-4px);
+}
+
 .header {
   text-align: center;
   margin-bottom: 3rem;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styles from './AcademicEvolution.module.css';
 
@@ -38,6 +39,10 @@ const AcademicEvolution = () => {
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5 }}
     >
+      <Link to="/" className={styles.backLink}>
+        ← Voltar para Início
+      </Link>
+
       <h1 className={styles.pageTitle}>Evolução Acadêmica</h1>
       
       <div className={styles.timeline}>

@@ -1,21 +1,44 @@
 /* Desktop First Style */
 .container {
   min-height: 100vh;
-  background-color: var(--bg-color); /* Bege/rosa claro padronizado */
-  color: #333333; /* Texto cinza escuro */
+  background-color: var(--bg-color);
+  color: var(--text-dark);
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
   padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Botão de voltar */
+.backLink {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text-mid);
+  text-decoration: none;
+  margin-bottom: 2.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--btn-border-light);
+  border-radius: 6px;
+  background: var(--btn-bg-light);
+  transition: all 0.25s ease;
+}
+
+.backLink:hover {
+  color: var(--text-dark);
+  border-color: var(--text-mid);
+  transform: translateX(-4px);
 }
 
 .contentWrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
-  max-width: 1200px;
   width: 100%;
   align-items: center;
+  flex-grow: 1;
 }
 
 .textContent {
@@ -26,9 +49,9 @@
 }
 
 .title {
-  font-family: 'Playfair Display', serif; /* Título serifado */
+  font-family: var(--font-serif);
   font-size: 3rem;
-  color: #2c2c2c;
+  color: var(--text-dark);
   margin-bottom: 1rem;
   font-weight: 700;
 }
@@ -36,7 +59,7 @@
 .text {
   font-size: 1.125rem;
   line-height: 1.8;
-  color: #4a4a4a;
+  color: var(--text-mid);
 }
 
 .imageContent {
@@ -49,7 +72,7 @@
   width: 100%;
   max-width: 500px;
   overflow: hidden;
-  border-radius: 8px; /* Adicionando um leve arredondamento para ser elegante */
+  border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
@@ -60,24 +83,37 @@
   object-fit: cover;
 }
 
-/* Responsividade Mobile - Empilha os elementos em uma única coluna */
+/* Responsividade Mobile */
 @media (max-width: 768px) {
+  .container {
+    padding: 3rem 1.5rem;
+  }
+
   .contentWrapper {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.5rem;
     text-align: center;
   }
 
   .textContent {
     padding: 0;
-    order: 2; /* Texto abaixo da imagem */
+    order: 2;
   }
 
   .imageContent {
-    order: 1; /* Imagem acima do texto */
+    order: 1;
+  }
+
+  .imagePlaceholder {
+    max-width: 350px;
   }
 
   .title {
     font-size: 2.25rem;
   }
+
+  .text {
+    font-size: 1rem;
+  }
 }
+

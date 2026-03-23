@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import ArticleCard from '../../components/ArticleCard/ArticleCard';
 import { sanityClient } from '../../services/sanity';
@@ -43,6 +44,10 @@ const Articles = () => {
       animate="visible"
       exit="exit"
     >
+      <Link to="/" className={styles.backLink}>
+        ← Voltar para Início
+      </Link>
+
       <header className={styles.header}>
         <h1 className={styles.title}>Artigos e Publicações</h1>
         <p className={styles.subtitle}>Acompanhe nossos textos sobre as principais atualizações e análises jurídicas.</p>

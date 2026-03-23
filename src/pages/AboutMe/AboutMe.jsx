@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styles from './AboutMe.module.css';
 import mbPicture from '../../assets/MB_Picture.jpeg';
@@ -22,6 +23,10 @@ const AboutMe = () => {
       animate="visible"
       exit="exit"
     >
+      <Link to="/" className={styles.backLink}>
+        ← Voltar para Início
+      </Link>
+
       <div className={styles.contentWrapper}>
         <section className={styles.textContent}>
           <h1 className={styles.title}>Minha Trajetória</h1>
