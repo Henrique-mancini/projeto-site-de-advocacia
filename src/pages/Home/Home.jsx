@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import styles from './Home.module.css';
 import Header from '../../components/Header/Header';
 import HeroSection from '../../components/HeroSection/HeroSection';
-import Footer from '../../components/Footer/Footer';
 
 const Home = () => {
   return (
@@ -17,7 +16,6 @@ const Home = () => {
       <main className={styles.mainContent}>
         <HeroSection />
       </main>
-      <Footer />
     </motion.div>
   );
 };

@@ -1,6 +1,7 @@
 /* Desktop First Style */
 .container {
-  min-height: 100vh;
+  flex: 1;
+  width: 100%;
   background-color: var(--bg-color);
   color: var(--text-dark);
   display: flex;

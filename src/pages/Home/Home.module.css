@@ -1,7 +1,7 @@
 .homeLayout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  flex: 1;
   position: relative;
   /* Uma leve textura radial para background bege/rosado que simula a textura */
   background: radial-gradient(circle at center, rgba(234, 221, 216, 0.4) 0%, transparent 60%);
