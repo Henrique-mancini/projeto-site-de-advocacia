@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { PortableText } from '@portabletext/react';
+import { sanityClient } from '../../services/sanity';
 import styles from './AboutMe.module.css';
 import mbPicture from '../../assets/MB_Picture.jpeg';
 
@@ -15,6 +17,40 @@ const pageVariants = {
 };
 
 const AboutMe = () => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAbout = async () => {
+      try {
+        const result = await sanityClient.fetch(
+          '*[_type == "about"][0]{..., "imageUrl": profileImage.asset->url}'
+        );
+        setData(result);
+      } catch (error) {
+        console.error('Erro ao buscar dados do Sobre Mim:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAbout();
+  }, []);
+
+  if (loading) {
+    return (
+      <motion.main
+        className={styles.container}
+        variants={pageVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+      >
+        <p className={styles.loading}>Carregando...</p>
+      </motion.main>
+    );
+  }
+
   return (
     <motion.main
       className={styles.container}
@@ -29,24 +65,20 @@ const AboutMe = () => {
 
       <div className={styles.contentWrapper}>
         <section className={styles.textContent}>
-          <h1 className={styles.title}>Minha Trajetória</h1>
-          <p className={styles.text}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo consequat.
-          </p>
-          <p className={styles.text}>
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-            dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-          </p>
+          <h1 className={styles.title}>{data?.title || 'Minha Trajetória'}</h1>
+          {data?.bio ? (
+            <div className={styles.bio}>
+              <PortableText value={data.bio} />
+            </div>
+          ) : (
+            <p className={styles.text}>Conteúdo em breve.</p>
+          )}
         </section>
 
         <section className={styles.imageContent}>
           <div className={styles.imagePlaceholder}>
             <img 
-              src={mbPicture} 
+              src={data?.imageUrl || mbPicture} 
               alt="Fotografia do Advogado" 
               className={styles.image}
             />
