@@ -146,6 +146,7 @@
   .timelineItem:nth-child(odd),
   .timelineItem:nth-child(even) {
     left: 0;
+    text-align: left;
   }
   
   /* Marcadores alinhados simetricamente à linha (7px + [16/2] = 15px exatos) */

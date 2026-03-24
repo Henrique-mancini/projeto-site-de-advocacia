@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { PortableText } from '@portabletext/react';
 import { sanityClient } from '../../services/sanity';
 import styles from './AboutMe.module.css';
-import mbPicture from '../../assets/MB_Picture.jpeg';
 
 const pageVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -77,11 +76,13 @@ const AboutMe = () => {
 
         <section className={styles.imageContent}>
           <div className={styles.imagePlaceholder}>
-            <img 
-              src={data?.imageUrl || mbPicture} 
-              alt="Fotografia do Advogado" 
-              className={styles.image}
-            />
+            {data?.imageUrl && (
+              <img 
+                src={data.imageUrl} 
+                alt="Fotografia do Advogado" 
+                className={styles.image}
+              />
+            )}
           </div>
         </section>
       </div>
