@@ -5,6 +5,7 @@ import Articles from './pages/Articles/Articles';
 import ArticleDetail from './pages/ArticleDetail/ArticleDetail';
 import AboutMe from './pages/AboutMe/AboutMe';
 import AcademicEvolution from './pages/AcademicEvolution/AcademicEvolution';
+import AcademicEventDetail from './pages/AcademicEventDetail/AcademicEventDetail';
 import Footer from './components/Footer/Footer';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/artigos/:slug" element={<ArticleDetail />} />
             <Route path="/sobre-mim" element={<AboutMe />} />
             <Route path="/evolucao-academica" element={<AcademicEvolution />} />
+            <Route path="/evolucao-academica/:slug" element={<AcademicEventDetail />} />
           </Routes>
         </AnimatePresence>
       </div>

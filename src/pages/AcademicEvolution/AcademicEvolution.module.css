@@ -94,11 +94,26 @@
 }
 
 /* Cartão com o conteúdo */
+.cardLink {
+  text-decoration: none;
+  display: block;
+  outline: none;
+}
+
 .timelineContent {
   padding: 1.5rem 2rem;
   background-color: #ffffff; /* Fundo branco pra destacar do background rosinha */
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Sombra elegante */
+  border: 1px solid transparent;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.cardLink:focus-visible .timelineContent,
+.cardLink:hover .timelineContent {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  border-color: rgba(220, 150, 160, 0.5); /* Sutil borda rosinha */
 }
 
 .year {

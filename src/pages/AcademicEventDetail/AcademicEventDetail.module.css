@@ -1,0 +1,87 @@
+.container {
+  flex: 1;
+  width: 100%;
+  padding: 4rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: var(--bg-color);
+}
+
+.backLink {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text-mid);
+  text-decoration: none;
+  margin-bottom: 3rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--btn-border-light);
+  border-radius: 6px;
+  background: var(--btn-bg-light);
+  transition: all 0.25s ease;
+}
+
+.backLink:hover {
+  color: var(--text-dark);
+  border-color: var(--text-mid);
+  transform: translateX(-4px);
+}
+
+.header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 2rem;
+}
+
+.yearBadge {
+  display: inline-block;
+  background-color: #f4e8e1; /* Beige pink accent */
+  color: var(--text-dark);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  color: var(--text-dark);
+  line-height: 1.2;
+}
+
+.body {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  color: var(--text-mid);
+  line-height: 1.8;
+}
+
+.body p {
+  margin-bottom: 1.5rem;
+}
+
+.loading {
+  text-align: center;
+  font-family: var(--font-sans);
+  color: var(--text-mid);
+  font-size: 1.2rem;
+  margin-top: 4rem;
+}
+
+/* Responsividade */
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 3rem 1.25rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .body {
+    font-size: 1rem;
+  }
+}
