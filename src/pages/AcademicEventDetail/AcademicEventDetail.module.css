@@ -73,20 +73,23 @@
 
 .pdfButton {
   display: inline-block;
-  margin-top: 2rem;
-  padding: 0.75rem 1.5rem;
-  background-color: var(--text-dark);
-  color: #fff;
   font-family: var(--font-sans);
-  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text-dark);
   text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  margin-top: 2.5rem;
+  border: 1px solid var(--btn-border-light);
   border-radius: 6px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  background: var(--btn-bg-light);
+  transition: all 0.25s ease;
 }
 
 .pdfButton:hover {
-  background-color: var(--text-mid);
+  background: var(--bg-color);
+  border-color: var(--text-mid);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 /* Responsividade */

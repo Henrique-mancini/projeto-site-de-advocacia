@@ -101,7 +101,7 @@ const ArticleDetail = () => {
           rel="noopener noreferrer"
           className={styles.pdfButton}
         >
-          Baixar Artigo Oficial (PDF)
+          Visualizar Artigo Oficial (PDF)
         </a>
       )}
     </motion.div>

@@ -91,7 +91,7 @@ const AcademicEventDetail = () => {
           rel="noopener noreferrer"
           className={styles.pdfButton}
         >
-          Baixar Documento (PDF)
+          Visualizar Documento (PDF)
         </a>
       )}
     </motion.div>
