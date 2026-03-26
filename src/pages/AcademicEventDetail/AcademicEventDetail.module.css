@@ -69,6 +69,8 @@
   color: var(--text-mid);
   font-size: 1.2rem;
   margin-top: 4rem;
+  hyphens: none;
+  -webkit-hyphens: none;
 }
 
 .pdfButton {

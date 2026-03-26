@@ -134,6 +134,9 @@
 .description {
   color: var(--text-mid);
   line-height: 1.6;
+  text-align: left;
+  hyphens: none;
+  -webkit-hyphens: none;
 }
 
 /* =========================================

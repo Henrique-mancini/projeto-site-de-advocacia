@@ -67,6 +67,9 @@
   margin: 1rem auto 1.5rem auto;
   max-width: 650px;
   font-weight: 300;
+  text-align: center;
+  hyphens: none;
+  -webkit-hyphens: none;
 }
 
 /* Media Query: Mobile */

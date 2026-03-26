@@ -46,6 +46,9 @@
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
+  text-align: center;
+  hyphens: none;
+  -webkit-hyphens: none;
 }
 
 /* Base Desktop First (3 colunas) */

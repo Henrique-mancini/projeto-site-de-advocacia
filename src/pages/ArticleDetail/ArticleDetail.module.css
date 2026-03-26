@@ -137,6 +137,8 @@
   color: var(--text-mid);
   text-align: center;
   padding: 4rem 0;
+  hyphens: none;
+  -webkit-hyphens: none;
 }
 
 /* Mobile */
