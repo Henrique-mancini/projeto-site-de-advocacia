@@ -19,7 +19,12 @@ const AcademicEventDetail = () => {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const query = '*[_type == "academicEvent" && slug.current == $slug][0]{..., "pdfUrl": pdfFile.asset->url}';
+        const query = `*[_type == "academicEvent" && slug.current == $slug][0]{
+          ...,
+          "pdfUrl": pdfFile.asset->url,
+          "eventImageUrl": eventImage.asset->url,
+          "eventImageAlt": eventImage.altText
+        }`;
         const data = await sanityClient.fetch(query, { slug });
         setEvent(data);
       } catch (error) {
@@ -75,25 +80,39 @@ const AcademicEventDetail = () => {
         ← Voltar para Evolução Acadêmica
       </Link>
 
-      <header className={styles.header}>
-        <span className={styles.yearBadge}>{event.year}</span>
-        <h1 className={styles.title}>{event.title}</h1>
-      </header>
+      <div className={styles.contentWrapper}>
+        <div className={styles.textContent}>
+          <header className={styles.header}>
+            <span className={styles.yearBadge}>{event.year}</span>
+            <h1 className={styles.title}>{event.title}</h1>
+          </header>
 
-      <article className={styles.body}>
-        {event.fullDescription && <PortableText value={event.fullDescription} />}
-      </article>
+          <article className={styles.body}>
+            {event.fullDescription && <PortableText value={event.fullDescription} />}
+          </article>
 
-      {event.pdfUrl && (
-        <a
-          href={event.pdfUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.pdfButton}
-        >
-          Visualizar Documento (PDF)
-        </a>
-      )}
+          {event.pdfUrl && (
+            <a
+              href={event.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.pdfButton}
+            >
+              Visualizar Documento (PDF)
+            </a>
+          )}
+        </div>
+
+        {event.eventImageUrl && (
+          <div className={styles.imageWrapper}>
+            <img
+              src={event.eventImageUrl}
+              alt={event.eventImageAlt || 'Imagem do evento'}
+              className={styles.featuredImage}
+            />
+          </div>
+        )}
+      </div>
     </motion.div>
   );
 };

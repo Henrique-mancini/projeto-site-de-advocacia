@@ -2,7 +2,7 @@
   flex: 1;
   width: 100%;
   padding: 4rem 2rem;
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   background-color: var(--bg-color);
 }
@@ -27,6 +27,39 @@
   transform: translateX(-4px);
 }
 
+/* ========================================
+   Layout Flexbox Premium
+======================================== */
+.contentWrapper {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+.textContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.imageWrapper {
+  flex: 0 0 35%;
+  max-width: 35%;
+  position: sticky;
+  top: 2rem;
+}
+
+.featuredImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* ========================================
+   Texto / Cabeçalho
+======================================== */
 .header {
   margin-bottom: 2rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
@@ -35,7 +68,7 @@
 
 .yearBadge {
   display: inline-block;
-  background-color: #f4e8e1; /* Beige pink accent */
+  background-color: #f4e8e1;
   color: var(--text-dark);
   font-family: var(--font-sans);
   font-weight: 600;
@@ -94,10 +127,33 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-/* Responsividade */
+/* ========================================
+   Responsivo — Mobile
+======================================== */
 @media screen and (max-width: 768px) {
   .container {
     padding: 3rem 1.25rem;
+  }
+
+  .contentWrapper {
+    flex-direction: column-reverse;
+    gap: 2rem;
+  }
+
+  .textContent {
+    width: 100%;
+  }
+
+  .imageWrapper {
+    flex: none;
+    max-width: 100%;
+    width: 100%;
+    position: static;
+  }
+
+  .featuredImage {
+    max-height: 350px;
+    object-fit: cover;
   }
 
   .title {

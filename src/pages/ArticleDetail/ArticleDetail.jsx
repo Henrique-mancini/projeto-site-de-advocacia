@@ -20,7 +20,12 @@ const ArticleDetail = () => {
     const fetchArticle = async () => {
       try {
         const data = await sanityClient.fetch(
-          '*[_type == "article" && slug.current == $slug][0]{..., "pdfUrl": pdfFile.asset->url}',
+          `*[_type == "article" && slug.current == $slug][0]{
+            ...,
+            "pdfUrl": pdfFile.asset->url,
+            "featuredImageUrl": featuredImage.asset->url,
+            "featuredImageAlt": featuredImage.altText
+          }`,
           { slug }
         );
         setArticle(data);
@@ -77,33 +82,47 @@ const ArticleDetail = () => {
         ← Voltar para Artigos
       </Link>
 
-      <header className={styles.header}>
-        <h1 className={styles.title}>{article.title}</h1>
-        {article.publishedAt && (
-          <time dateTime={article.publishedAt} className={styles.date}>
-            {new Date(article.publishedAt).toLocaleDateString('pt-BR', {
-              day: '2-digit',
-              month: 'long',
-              year: 'numeric',
-            })}
-          </time>
+      <div className={styles.contentWrapper}>
+        <div className={styles.textContent}>
+          <header className={styles.header}>
+            <h1 className={styles.title}>{article.title}</h1>
+            {article.publishedAt && (
+              <time dateTime={article.publishedAt} className={styles.date}>
+                {new Date(article.publishedAt).toLocaleDateString('pt-BR', {
+                  day: '2-digit',
+                  month: 'long',
+                  year: 'numeric',
+                })}
+              </time>
+            )}
+          </header>
+
+          <article className={styles.body}>
+            {article.body && <PortableText value={article.body} />}
+          </article>
+
+          {article.pdfUrl && (
+            <a
+              href={article.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.pdfButton}
+            >
+              Visualizar Artigo Oficial (PDF)
+            </a>
+          )}
+        </div>
+
+        {article.featuredImageUrl && (
+          <div className={styles.imageWrapper}>
+            <img
+              src={article.featuredImageUrl}
+              alt={article.featuredImageAlt || 'Imagem do artigo'}
+              className={styles.featuredImage}
+            />
+          </div>
         )}
-      </header>
-
-      <article className={styles.body}>
-        {article.body && <PortableText value={article.body} />}
-      </article>
-
-      {article.pdfUrl && (
-        <a
-          href={article.pdfUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.pdfButton}
-        >
-          Visualizar Artigo Oficial (PDF)
-        </a>
-      )}
+      </div>
     </motion.div>
   );
 };
