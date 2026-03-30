@@ -75,3 +75,18 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Loader */
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.loading {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  color: var(--text-mid);
+  text-align: center;
+}

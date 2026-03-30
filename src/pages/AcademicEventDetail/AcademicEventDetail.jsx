@@ -1,14 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { sanityClient } from '../../services/sanity';
 import { PortableText } from '@portabletext/react';
 import styles from './AcademicEventDetail.module.css';
 
 const pageVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
   exit: { opacity: 0, y: -20, transition: { duration: 0.3 } },
+};
+
+const innerVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  exit: { opacity: 0, transition: { duration: 0.25 } },
+};
+
+const loaderVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.3 } },
+  exit: { opacity: 0, transition: { duration: 0.25 } },
 };
 
 const AcademicEventDetail = () => {
@@ -37,37 +49,6 @@ const AcademicEventDetail = () => {
     fetchEvent();
   }, [slug]);
 
-  if (loading) {
-    return (
-      <motion.div
-        className={styles.container}
-        variants={pageVariants}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-      >
-        <p className={styles.loading}>Carregando...</p>
-      </motion.div>
-    );
-  }
-
-  if (!event) {
-    return (
-      <motion.div
-        className={styles.container}
-        variants={pageVariants}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-      >
-        <p className={styles.loading}>Evento não encontrado.</p>
-        <Link to="/evolucao-academica" className={styles.backLink}>
-          ← Voltar para Evolução Acadêmica
-        </Link>
-      </motion.div>
-    );
-  }
-
   return (
     <motion.div
       className={styles.container}
@@ -76,43 +57,78 @@ const AcademicEventDetail = () => {
       animate="visible"
       exit="exit"
     >
-      <Link to="/evolucao-academica" className={styles.backLink}>
-        ← Voltar para Evolução Acadêmica
-      </Link>
+      <AnimatePresence mode="wait">
+        {loading ? (
+          <motion.div
+            key="event-loader"
+            variants={loaderVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <p className={styles.loading}>Carregando...</p>
+          </motion.div>
+        ) : !event ? (
+          <motion.div
+            key="event-not-found"
+            variants={innerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <p className={styles.loading}>Evento não encontrado.</p>
+            <Link to="/evolucao-academica" className={styles.backLink}>
+              ← Voltar para Evolução Acadêmica
+            </Link>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="event-content"
+            variants={innerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <Link to="/evolucao-academica" className={styles.backLink}>
+              ← Voltar para Evolução Acadêmica
+            </Link>
 
-      <div className={styles.contentWrapper}>
-        <div className={styles.textContent}>
-          <header className={styles.header}>
-            <span className={styles.yearBadge}>{event.year}</span>
-            <h1 className={styles.title}>{event.title}</h1>
-          </header>
+            <div className={styles.contentWrapper}>
+              <div className={styles.textContent}>
+                <header className={styles.header}>
+                  <span className={styles.yearBadge}>{event.year}</span>
+                  <h1 className={styles.title}>{event.title}</h1>
+                </header>
 
-          <article className={styles.body}>
-            {event.fullDescription && <PortableText value={event.fullDescription} />}
-          </article>
+                <article className={styles.body}>
+                  {event.fullDescription && <PortableText value={event.fullDescription} />}
+                </article>
 
-          {event.pdfUrl && (
-            <a
-              href={event.pdfUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.pdfButton}
-            >
-              Visualizar Documento (PDF)
-            </a>
-          )}
-        </div>
+                {event.pdfUrl && (
+                  <a
+                    href={event.pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.pdfButton}
+                  >
+                    Visualizar Documento (PDF)
+                  </a>
+                )}
+              </div>
 
-        {event.eventImageUrl && (
-          <div className={styles.imageWrapper}>
-            <img
-              src={event.eventImageUrl}
-              alt={event.eventImageAlt || 'Imagem do evento'}
-              className={styles.featuredImage}
-            />
-          </div>
+              {event.eventImageUrl && (
+                <div className={styles.imageWrapper}>
+                  <img
+                    src={event.eventImageUrl}
+                    alt={event.eventImageAlt || 'Imagem do evento'}
+                    className={styles.featuredImage}
+                  />
+                </div>
+              )}
+            </div>
+          </motion.div>
         )}
-      </div>
+      </AnimatePresence>
     </motion.div>
   );
 };
