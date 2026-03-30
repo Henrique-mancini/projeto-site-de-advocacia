@@ -4,6 +4,12 @@
   justify-content: center; /* Desktop: centralizado */
 }
 
+.monogramImage {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
 /* Base estilizada simulando os ramos e iniciais */
 .monogramVisual {
   font-family: var(--font-serif);

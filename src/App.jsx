@@ -75,18 +75,16 @@ function App() {
 
   return (
     <>
-      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<Home />} />
-            <Route path="/artigos" element={<Articles />} />
-            <Route path="/artigos/:slug" element={<ArticleDetail />} />
-            <Route path="/sobre-mim" element={<AboutMe />} />
-            <Route path="/evolucao-academica" element={<AcademicEvolution />} />
-            <Route path="/evolucao-academica/:slug" element={<AcademicEventDetail />} />
-          </Routes>
-        </AnimatePresence>
-      </div>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<Home />} />
+          <Route path="/artigos" element={<Articles />} />
+          <Route path="/artigos/:slug" element={<ArticleDetail />} />
+          <Route path="/sobre-mim" element={<AboutMe />} />
+          <Route path="/evolucao-academica" element={<AcademicEvolution />} />
+          <Route path="/evolucao-academica/:slug" element={<AcademicEventDetail />} />
+        </Routes>
+      </AnimatePresence>
       <Footer />
     </>
   );
