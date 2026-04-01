@@ -5,6 +5,18 @@ import { sanityClient } from '../../services/sanity';
 import { PortableText } from '@portabletext/react';
 import styles from './AcademicEventDetail.module.css';
 
+const MONTH_NAMES = [
+  '', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+];
+
+const formatEventDate = (month, year) => {
+  if (month && MONTH_NAMES[month]) {
+    return `${MONTH_NAMES[month]} de ${year}`;
+  }
+  return year;
+};
+
 const pageVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
@@ -96,7 +108,7 @@ const AcademicEventDetail = () => {
             <div className={styles.contentWrapper}>
               <div className={styles.textContent}>
                 <header className={styles.header}>
-                  <span className={styles.yearBadge}>{event.year}</span>
+                  <span className={styles.yearBadge}>{formatEventDate(event.month, event.year)}</span>
                   <h1 className={styles.title}>{event.title}</h1>
                 </header>
 

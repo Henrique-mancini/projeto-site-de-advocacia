@@ -4,6 +4,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { sanityClient } from '../../services/sanity';
 import styles from './AcademicEvolution.module.css';
 
+const MONTH_NAMES = [
+  '', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+];
+
+const formatEventDate = (month, year) => {
+  if (month && MONTH_NAMES[month]) {
+    return `${MONTH_NAMES[month]} de ${year}`;
+  }
+  return year;
+};
+
 const pageVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { 
@@ -46,7 +58,7 @@ const AcademicEvolution = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const query = '*[_type == "academicEvent"] | order(year asc)';
+        const query = '*[_type == "academicEvent"] | order(year asc, month asc)';
         const data = await sanityClient.fetch(query);
         setEvents(data);
       } catch (error) {
@@ -103,7 +115,7 @@ const AcademicEvolution = () => {
                 >
                   <Link to={`/evolucao-academica/${item.slug.current}`} className={styles.cardLink}>
                     <div className={styles.timelineContent}>
-                      <span className={styles.year}>{item.year}</span>
+                      <span className={styles.year}>{formatEventDate(item.month, item.year)}</span>
                       <h2 className={styles.itemTitle}>{item.title}</h2>
                       <p className={styles.description}>{item.shortDescription}</p>
                     </div>
