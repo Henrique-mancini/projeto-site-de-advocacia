@@ -26,7 +26,7 @@ const socialLinks = [
   },
   {
     name: 'Instagram',
-    href: 'https://www.instagram.com/bressan.duda',
+    href: 'https://www.instagram.com/m.eduardabressan',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
