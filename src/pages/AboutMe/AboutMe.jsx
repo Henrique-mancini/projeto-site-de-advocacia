@@ -1,60 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PortableText } from '@portabletext/react';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
-import { sanityClient } from '../../services/sanity';
+import Loading from '../../components/Loading/Loading';
+import { useSanityFetch } from '../../hooks/useSanityFetch';
 import styles from './AboutMe.module.css';
 
 const pageVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.5, ease: 'easeOut' } 
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: 'easeOut' }
   },
   exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
 };
 
 const innerVariants = {
   hidden: { opacity: 0, y: 15 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.5, ease: 'easeOut' } 
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: 'easeOut' }
   },
   exit: { opacity: 0, transition: { duration: 0.25 } }
 };
 
-const loaderVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.3 } },
-  exit: { opacity: 0, transition: { duration: 0.25 } }
-};
+const ABOUT_QUERY = '*[_type == "about"][0]{..., "imageUrl": profileImage.asset->url}';
 
 const AboutMe = () => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  const fetchAbout = async () => {
-    setError(false);
-    setLoading(true);
-    try {
-      const result = await sanityClient.fetch(
-        '*[_type == "about"][0]{..., "imageUrl": profileImage.asset->url}'
-      );
-      setData(result);
-    } catch (error) {
-      console.error('Erro ao buscar dados do Sobre Mim:', error);
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data, loading, error, retry } = useSanityFetch(ABOUT_QUERY);
 
   useEffect(() => {
-    fetchAbout();
+    document.title = 'Sobre Mim — Maria Eduarda Bressan';
   }, []);
 
   return (
@@ -67,31 +46,16 @@ const AboutMe = () => {
     >
       <AnimatePresence mode="wait">
         {loading ? (
-          <motion.div
-            key="about-loader"
-            variants={loaderVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <p className={styles.loading}>Carregando...</p>
-          </motion.div>
+          <Loading key="about-loader" />
         ) : error ? (
-          <motion.div
+          <ErrorMessage
             key="about-error"
-            variants={loaderVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <ErrorMessage
-              message="Não foi possível carregar as informações."
-              retryText="Tentar novamente"
-              onRetry={fetchAbout}
-              backLink="/"
-              backText="← Voltar para Início"
-            />
-          </motion.div>
+            message="Não foi possível carregar as informações."
+            retryText="Tentar novamente"
+            onRetry={retry}
+            backLink="/"
+            backText="← Voltar para Início"
+          />
         ) : (
           <motion.div
             key="about-content"

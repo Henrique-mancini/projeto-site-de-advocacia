@@ -1,11 +1,16 @@
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import styles from './Home.module.css';
 import Header from '../../components/Header/Header';
 import HeroSection from '../../components/HeroSection/HeroSection';
 
 const Home = () => {
+  useEffect(() => {
+    document.title = 'Maria Eduarda Bressan';
+  }, []);
+
   return (
-    <motion.div 
+    <motion.div
       className={styles.homeLayout}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}

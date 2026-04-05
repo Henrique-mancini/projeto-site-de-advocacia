@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PortableText } from '@portabletext/react';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
+import Loading from '../../components/Loading/Loading';
 import { sanityClient } from '../../services/sanity';
 import styles from './ArticleDetail.module.css';
 
@@ -18,11 +19,12 @@ const innerVariants = {
   exit: { opacity: 0, transition: { duration: 0.25 } },
 };
 
-const loaderVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.3 } },
-  exit: { opacity: 0, transition: { duration: 0.25 } },
-};
+const ARTICLE_QUERY = `*[_type == "article" && slug.current == $slug][0]{
+  ...,
+  "pdfUrl": pdfFile.asset->url,
+  "featuredImageUrl": featuredImage.asset->url,
+  "featuredImageAlt": featuredImage.altText
+}`;
 
 const ArticleDetail = () => {
   const { slug } = useParams();
@@ -30,38 +32,29 @@ const ArticleDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const fetchArticle = async () => {
+  const fetchArticle = useCallback(async () => {
     setError(false);
     setLoading(true);
     try {
-      const data = await sanityClient.fetch(
-        `*[_type == "article" && slug.current == $slug][0]{
-          ...,
-          "pdfUrl": pdfFile.asset->url,
-          "featuredImageUrl": featuredImage.asset->url,
-          "featuredImageAlt": featuredImage.altText
-        }`,
-        { slug }
-      );
+      const data = await sanityClient.fetch(ARTICLE_QUERY, { slug });
       setArticle(data);
-    } catch (error) {
-      console.error('Erro ao buscar artigo:', error);
+    } catch {
       setError(true);
     } finally {
       setLoading(false);
     }
-  };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    fetchArticle();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
-  const resolveInnerKey = () => {
-    if (loading) return 'article-loader';
-    if (!article) return 'article-not-found';
-    return 'article-content';
-  };
+  useEffect(() => {
+    fetchArticle();
+  }, [fetchArticle]);
+
+  useEffect(() => {
+    document.title = loading || error || !article
+      ? 'Artigo — Maria Eduarda Bressan'
+      : `${article.title} — Maria Eduarda Bressan`;
+  }, [article, loading, error]);
 
   return (
     <motion.div
@@ -73,31 +66,16 @@ const ArticleDetail = () => {
     >
       <AnimatePresence mode="wait">
         {loading ? (
-          <motion.div
-            key="article-loader"
-            variants={loaderVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <p className={styles.loading}>Carregando...</p>
-          </motion.div>
+          <Loading key="article-loader" />
         ) : error ? (
-          <motion.div
+          <ErrorMessage
             key="article-error"
-            variants={loaderVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <ErrorMessage
-              message="Não foi possível carregar o artigo."
-              retryText="Tentar novamente"
-              onRetry={fetchArticle}
-              backLink="/artigos"
-              backText="← Voltar para Artigos"
-            />
-          </motion.div>
+            message="Não foi possível carregar o artigo."
+            retryText="Tentar novamente"
+            onRetry={fetchArticle}
+            backLink="/artigos"
+            backText="← Voltar para Artigos"
+          />
         ) : !article ? (
           <motion.div
             key="article-not-found"

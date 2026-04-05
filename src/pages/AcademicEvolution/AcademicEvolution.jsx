@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
-import { sanityClient } from '../../services/sanity';
+import Loading from '../../components/Loading/Loading';
+import { useSanityFetch } from '../../hooks/useSanityFetch';
 import styles from './AcademicEvolution.module.css';
 
 const MONTH_NAMES = [
@@ -19,61 +20,35 @@ const formatEventDate = (month, year) => {
 
 const pageVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.5, ease: 'easeOut' } 
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: 'easeOut' }
   },
   exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
 };
 
 const contentVariants = {
   hidden: { opacity: 0, y: 15 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { 
-      duration: 0.5, 
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
       ease: 'easeOut',
-      staggerChildren: 0.1 
-    } 
+      staggerChildren: 0.1
+    }
   },
   exit: { opacity: 0, transition: { duration: 0.25 } }
 };
 
-const loaderVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.3 } },
-  exit: { opacity: 0, transition: { duration: 0.25 } }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
-};
+const EVENTS_QUERY = '*[_type == "academicEvent"] | order(year asc, month asc)';
 
 const AcademicEvolution = () => {
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  const fetchEvents = async () => {
-    setError(false);
-    setLoading(true);
-    try {
-      const query = '*[_type == "academicEvent"] | order(year asc, month asc)';
-      const data = await sanityClient.fetch(query);
-      setEvents(data);
-    } catch (error) {
-      console.error('Erro ao buscar eventos acadêmicos:', error);
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: events, loading, error, retry } = useSanityFetch(EVENTS_QUERY);
 
   useEffect(() => {
-    fetchEvents();
+    document.title = 'Evolução Acadêmica — Maria Eduarda Bressan';
   }, []);
 
   return (
@@ -86,33 +61,16 @@ const AcademicEvolution = () => {
     >
       <AnimatePresence mode="wait">
         {loading ? (
-          <motion.div
-            key="evolution-loader"
-            variants={loaderVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <p className={styles.loading} style={{ textAlign: 'center', marginTop: '4rem' }}>
-              Carregando timeline...
-            </p>
-          </motion.div>
+          <Loading key="evolution-loader" text="Carregando timeline..." />
         ) : error ? (
-          <motion.div
+          <ErrorMessage
             key="evolution-error"
-            variants={loaderVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <ErrorMessage
-              message="Não foi possível carregar a evolução acadêmica."
-              retryText="Tentar novamente"
-              onRetry={fetchEvents}
-              backLink="/"
-              backText="← Voltar para Início"
-            />
-          </motion.div>
+            message="Não foi possível carregar a evolução acadêmica."
+            retryText="Tentar novamente"
+            onRetry={retry}
+            backLink="/"
+            backText="← Voltar para Início"
+          />
         ) : (
           <motion.div
             key="evolution-content"
@@ -132,7 +90,6 @@ const AcademicEvolution = () => {
                 <motion.div
                   key={item._id}
                   className={styles.timelineItem}
-                  variants={itemVariants}
                 >
                   <Link to={`/evolucao-academica/${item.slug.current}`} className={styles.cardLink}>
                     <div className={styles.timelineContent}>

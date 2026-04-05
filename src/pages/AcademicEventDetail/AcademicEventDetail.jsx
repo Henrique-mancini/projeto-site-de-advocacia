@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
+import Loading from '../../components/Loading/Loading';
 import { sanityClient } from '../../services/sanity';
 import { PortableText } from '@portabletext/react';
 import styles from './AcademicEventDetail.module.css';
@@ -30,11 +31,12 @@ const innerVariants = {
   exit: { opacity: 0, transition: { duration: 0.25 } },
 };
 
-const loaderVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.3 } },
-  exit: { opacity: 0, transition: { duration: 0.25 } },
-};
+const EVENT_QUERY = `*[_type == "academicEvent" && slug.current == $slug][0]{
+  ...,
+  "pdfUrl": pdfFile.asset->url,
+  "eventImageUrl": eventImage.asset->url,
+  "eventImageAlt": eventImage.altText
+}`;
 
 const AcademicEventDetail = () => {
   const { slug } = useParams();
@@ -42,30 +44,29 @@ const AcademicEventDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const fetchEvent = async () => {
+  const fetchEvent = useCallback(async () => {
     setError(false);
     setLoading(true);
     try {
-      const query = `*[_type == "academicEvent" && slug.current == $slug][0]{
-        ...,
-        "pdfUrl": pdfFile.asset->url,
-        "eventImageUrl": eventImage.asset->url,
-        "eventImageAlt": eventImage.altText
-      }`;
-      const data = await sanityClient.fetch(query, { slug });
+      const data = await sanityClient.fetch(EVENT_QUERY, { slug });
       setEvent(data);
-    } catch (error) {
-      console.error('Erro ao buscar evento acadêmico:', error);
+    } catch {
       setError(true);
     } finally {
       setLoading(false);
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchEvent();
-  }, [slug]);
+  }, [fetchEvent]);
+
+  useEffect(() => {
+    document.title = loading || error || !event
+      ? 'Evento acadêmico — Maria Eduarda Bressan'
+      : `${event.title} — Maria Eduarda Bressan`;
+  }, [event, loading, error]);
 
   return (
     <motion.div
@@ -77,31 +78,16 @@ const AcademicEventDetail = () => {
     >
       <AnimatePresence mode="wait">
         {loading ? (
-          <motion.div
-            key="event-loader"
-            variants={loaderVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <p className={styles.loading}>Carregando...</p>
-          </motion.div>
+          <Loading key="event-loader" />
         ) : error ? (
-          <motion.div
+          <ErrorMessage
             key="event-error"
-            variants={loaderVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <ErrorMessage
-              message="Não foi possível carregar o evento acadêmico."
-              retryText="Tentar novamente"
-              onRetry={fetchEvent}
-              backLink="/evolucao-academica"
-              backText="← Voltar para Evolução Acadêmica"
-            />
-          </motion.div>
+            message="Não foi possível carregar o evento acadêmico."
+            retryText="Tentar novamente"
+            onRetry={fetchEvent}
+            backLink="/evolucao-academica"
+            backText="← Voltar para Evolução Acadêmica"
+          />
         ) : !event ? (
           <motion.div
             key="event-not-found"

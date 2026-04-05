@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import ArticleCard from '../../components/ArticleCard/ArticleCard';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
-import { sanityClient } from '../../services/sanity';
+import Loading from '../../components/Loading/Loading';
+import { useSanityFetch } from '../../hooks/useSanityFetch';
 import styles from './Articles.module.css';
 
 const pageVariants = {
@@ -30,39 +31,17 @@ const contentVariants = {
   exit: { opacity: 0, transition: { duration: 0.2 } }
 };
 
-const loaderVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.3 } },
-  exit: { opacity: 0, transition: { duration: 0.25 } }
-};
+const ARTICLES_QUERY = '*[_type == "article"] | order(publishedAt desc)';
 
 const Articles = () => {
-  const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  const fetchArticles = async () => {
-    setError(false);
-    setLoading(true);
-    try {
-      const data = await sanityClient.fetch(
-        '*[_type == "article"] | order(publishedAt desc)'
-      );
-      setArticles(data);
-    } catch (error) {
-      console.error('Erro ao buscar artigos:', error);
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: articles, loading, error, retry } = useSanityFetch(ARTICLES_QUERY);
 
   useEffect(() => {
-    fetchArticles();
+    document.title = 'Artigos e Publicações — Maria Eduarda Bressan';
   }, []);
 
   return (
-    <motion.main 
+    <motion.main
       className={styles.container}
       variants={pageVariants}
       initial="hidden"
@@ -77,35 +56,19 @@ const Articles = () => {
         <h1 className={styles.title}>Artigos e Publicações</h1>
         <p className={styles.subtitle}>Acompanhe nossos textos sobre as principais atualizações e análises jurídicas.</p>
       </header>
-      
+
       <AnimatePresence mode="wait">
         {loading ? (
-          <motion.div
-            key="articles-loader"
-            variants={loaderVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className={styles.loaderWrapper}
-          >
-            <p className={styles.loading}>Carregando artigos...</p>
-          </motion.div>
+          <Loading key="articles-loader" text="Carregando artigos..." />
         ) : error ? (
-          <motion.div
+          <ErrorMessage
             key="articles-error"
-            variants={loaderVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <ErrorMessage
-              message="Não foi possível carregar os artigos."
-              retryText="Tentar novamente"
-              onRetry={fetchArticles}
-              backLink="/"
-              backText="← Voltar para Início"
-            />
-          </motion.div>
+            message="Não foi possível carregar os artigos."
+            retryText="Tentar novamente"
+            onRetry={retry}
+            backLink="/"
+            backText="← Voltar para Início"
+          />
         ) : (
           <motion.section
             key="articles-content"
