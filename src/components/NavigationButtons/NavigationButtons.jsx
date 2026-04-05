@@ -1,29 +1,27 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styles from './NavigationButtons.module.css';
 
 const NavigationButtons = () => {
-  const navigate = useNavigate();
-
   return (
     <nav className={styles.navButtons} aria-label="Links rápidos">
       <ul className={styles.buttonList}>
         <li>
-          <button className={styles.button} type="button" onClick={() => navigate('/sobre-mim')}>
+          <Link to="/sobre-mim" className={styles.button}>
             <span className={styles.buttonText}>SOBRE MIM</span>
             <span className={styles.iconRight} aria-hidden="true">&rsaquo;</span>
-          </button>
+          </Link>
         </li>
         <li>
-          <button className={styles.button} type="button" onClick={() => navigate('/artigos')}>
+          <Link to="/artigos" className={styles.button}>
             <span className={styles.buttonText}>ARTIGOS E TEXTOS</span>
             <span className={styles.iconRight} aria-hidden="true">&rsaquo;</span>
-          </button>
+          </Link>
         </li>
         <li>
-          <button className={styles.button} type="button" onClick={() => navigate('/evolucao-academica')}>
+          <Link to="/evolucao-academica" className={styles.button}>
             <span className={styles.buttonText}>EVOLUÇÃO ACADÊMICA</span>
             <span className={styles.iconRight} aria-hidden="true">&rsaquo;</span>
-          </button>
+          </Link>
         </li>
       </ul>
     </nav>
