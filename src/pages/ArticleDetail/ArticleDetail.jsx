@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PortableText } from '@portabletext/react';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import { sanityClient } from '../../services/sanity';
 import styles from './ArticleDetail.module.css';
 
@@ -27,27 +28,32 @@ const ArticleDetail = () => {
   const { slug } = useParams();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
+  const fetchArticle = async () => {
+    setError(false);
+    setLoading(true);
+    try {
+      const data = await sanityClient.fetch(
+        `*[_type == "article" && slug.current == $slug][0]{
+          ...,
+          "pdfUrl": pdfFile.asset->url,
+          "featuredImageUrl": featuredImage.asset->url,
+          "featuredImageAlt": featuredImage.altText
+        }`,
+        { slug }
+      );
+      setArticle(data);
+    } catch (error) {
+      console.error('Erro ao buscar artigo:', error);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    const fetchArticle = async () => {
-      try {
-        const data = await sanityClient.fetch(
-          `*[_type == "article" && slug.current == $slug][0]{
-            ...,
-            "pdfUrl": pdfFile.asset->url,
-            "featuredImageUrl": featuredImage.asset->url,
-            "featuredImageAlt": featuredImage.altText
-          }`,
-          { slug }
-        );
-        setArticle(data);
-      } catch (error) {
-        console.error('Erro ao buscar artigo:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchArticle();
   }, [slug]);
 
@@ -75,6 +81,22 @@ const ArticleDetail = () => {
             exit="exit"
           >
             <p className={styles.loading}>Carregando...</p>
+          </motion.div>
+        ) : error ? (
+          <motion.div
+            key="article-error"
+            variants={loaderVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <ErrorMessage
+              message="Não foi possível carregar o artigo."
+              retryText="Tentar novamente"
+              onRetry={fetchArticle}
+              backLink="/artigos"
+              backText="← Voltar para Artigos"
+            />
           </motion.div>
         ) : !article ? (
           <motion.div

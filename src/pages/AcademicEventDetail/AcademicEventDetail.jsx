@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import { sanityClient } from '../../services/sanity';
 import { PortableText } from '@portabletext/react';
 import styles from './AcademicEventDetail.module.css';
@@ -39,25 +40,30 @@ const AcademicEventDetail = () => {
   const { slug } = useParams();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
+  const fetchEvent = async () => {
+    setError(false);
+    setLoading(true);
+    try {
+      const query = `*[_type == "academicEvent" && slug.current == $slug][0]{
+        ...,
+        "pdfUrl": pdfFile.asset->url,
+        "eventImageUrl": eventImage.asset->url,
+        "eventImageAlt": eventImage.altText
+      }`;
+      const data = await sanityClient.fetch(query, { slug });
+      setEvent(data);
+    } catch (error) {
+      console.error('Erro ao buscar evento acadêmico:', error);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    const fetchEvent = async () => {
-      try {
-        const query = `*[_type == "academicEvent" && slug.current == $slug][0]{
-          ...,
-          "pdfUrl": pdfFile.asset->url,
-          "eventImageUrl": eventImage.asset->url,
-          "eventImageAlt": eventImage.altText
-        }`;
-        const data = await sanityClient.fetch(query, { slug });
-        setEvent(data);
-      } catch (error) {
-        console.error('Erro ao buscar evento acadêmico:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchEvent();
   }, [slug]);
 
@@ -79,6 +85,22 @@ const AcademicEventDetail = () => {
             exit="exit"
           >
             <p className={styles.loading}>Carregando...</p>
+          </motion.div>
+        ) : error ? (
+          <motion.div
+            key="event-error"
+            variants={loaderVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <ErrorMessage
+              message="Não foi possível carregar o evento acadêmico."
+              retryText="Tentar novamente"
+              onRetry={fetchEvent}
+              backLink="/evolucao-academica"
+              backText="← Voltar para Evolução Acadêmica"
+            />
           </motion.div>
         ) : !event ? (
           <motion.div

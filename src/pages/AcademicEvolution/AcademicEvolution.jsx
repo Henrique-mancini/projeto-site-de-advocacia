@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import { sanityClient } from '../../services/sanity';
 import styles from './AcademicEvolution.module.css';
 
@@ -54,20 +55,24 @@ const itemVariants = {
 const AcademicEvolution = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const fetchEvents = async () => {
+    setError(false);
+    setLoading(true);
+    try {
+      const query = '*[_type == "academicEvent"] | order(year asc, month asc)';
+      const data = await sanityClient.fetch(query);
+      setEvents(data);
+    } catch (error) {
+      console.error('Erro ao buscar eventos acadêmicos:', error);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const query = '*[_type == "academicEvent"] | order(year asc, month asc)';
-        const data = await sanityClient.fetch(query);
-        setEvents(data);
-      } catch (error) {
-        console.error('Erro ao buscar eventos acadêmicos:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchEvents();
   }, []);
 
@@ -92,6 +97,22 @@ const AcademicEvolution = () => {
               Carregando timeline...
             </p>
           </motion.div>
+        ) : error ? (
+          <motion.div
+            key="evolution-error"
+            variants={loaderVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <ErrorMessage
+              message="Não foi possível carregar a evolução acadêmica."
+              retryText="Tentar novamente"
+              onRetry={fetchEvents}
+              backLink="/"
+              backText="← Voltar para Início"
+            />
+          </motion.div>
         ) : (
           <motion.div
             key="evolution-content"
@@ -105,11 +126,11 @@ const AcademicEvolution = () => {
             </Link>
 
             <h1 className={styles.pageTitle}>Evolução Acadêmica</h1>
-            
+
             <div className={styles.timeline}>
               {events.map((item) => (
-                <motion.div 
-                  key={item._id} 
+                <motion.div
+                  key={item._id}
                   className={styles.timelineItem}
                   variants={itemVariants}
                 >

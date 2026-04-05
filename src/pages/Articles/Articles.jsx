@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import ArticleCard from '../../components/ArticleCard/ArticleCard';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import { sanityClient } from '../../services/sanity';
 import styles from './Articles.module.css';
 
@@ -38,21 +39,25 @@ const loaderVariants = {
 const Articles = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const fetchArticles = async () => {
+    setError(false);
+    setLoading(true);
+    try {
+      const data = await sanityClient.fetch(
+        '*[_type == "article"] | order(publishedAt desc)'
+      );
+      setArticles(data);
+    } catch (error) {
+      console.error('Erro ao buscar artigos:', error);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const data = await sanityClient.fetch(
-          '*[_type == "article"] | order(publishedAt desc)'
-        );
-        setArticles(data);
-      } catch (error) {
-        console.error('Erro ao buscar artigos:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchArticles();
   }, []);
 
@@ -84,6 +89,22 @@ const Articles = () => {
             className={styles.loaderWrapper}
           >
             <p className={styles.loading}>Carregando artigos...</p>
+          </motion.div>
+        ) : error ? (
+          <motion.div
+            key="articles-error"
+            variants={loaderVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <ErrorMessage
+              message="Não foi possível carregar os artigos."
+              retryText="Tentar novamente"
+              onRetry={fetchArticles}
+              backLink="/"
+              backText="← Voltar para Início"
+            />
           </motion.div>
         ) : (
           <motion.section

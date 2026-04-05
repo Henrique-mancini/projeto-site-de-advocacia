@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PortableText } from '@portabletext/react';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import { sanityClient } from '../../services/sanity';
 import styles from './AboutMe.module.css';
 
@@ -34,21 +35,25 @@ const loaderVariants = {
 const AboutMe = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const fetchAbout = async () => {
+    setError(false);
+    setLoading(true);
+    try {
+      const result = await sanityClient.fetch(
+        '*[_type == "about"][0]{..., "imageUrl": profileImage.asset->url}'
+      );
+      setData(result);
+    } catch (error) {
+      console.error('Erro ao buscar dados do Sobre Mim:', error);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchAbout = async () => {
-      try {
-        const result = await sanityClient.fetch(
-          '*[_type == "about"][0]{..., "imageUrl": profileImage.asset->url}'
-        );
-        setData(result);
-      } catch (error) {
-        console.error('Erro ao buscar dados do Sobre Mim:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchAbout();
   }, []);
 
@@ -70,6 +75,22 @@ const AboutMe = () => {
             exit="exit"
           >
             <p className={styles.loading}>Carregando...</p>
+          </motion.div>
+        ) : error ? (
+          <motion.div
+            key="about-error"
+            variants={loaderVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <ErrorMessage
+              message="Não foi possível carregar as informações."
+              retryText="Tentar novamente"
+              onRetry={fetchAbout}
+              backLink="/"
+              backText="← Voltar para Início"
+            />
           </motion.div>
         ) : (
           <motion.div
@@ -98,9 +119,9 @@ const AboutMe = () => {
               <section className={styles.imageContent}>
                 <div className={styles.imagePlaceholder}>
                   {data?.imageUrl && (
-                    <img 
-                      src={data.imageUrl} 
-                      alt="Fotografia do Advogado" 
+                    <img
+                      src={data.imageUrl}
+                      alt="Fotografia do Advogado"
                       className={styles.image}
                     />
                   )}

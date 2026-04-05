@@ -1,0 +1,69 @@
+.errorWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 1rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+.errorIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--error-color, #b00020);
+  color: var(--error-color, #b00020);
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.errorMessage {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--text-dark);
+  max-width: 400px;
+  hyphens: auto;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.retryButton {
+  background-color: var(--text-dark);
+  color: var(--bg-color);
+  border: none;
+  padding: 0.7rem 1.5rem;
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.retryButton:hover {
+  opacity: 0.8;
+}
+
+.backLink {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 300;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.backLink:hover {
+  border-bottom-color: currentColor;
+}
