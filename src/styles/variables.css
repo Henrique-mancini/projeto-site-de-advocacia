@@ -13,8 +13,8 @@
   --accent-star: #2a2a2a; /* Cor da estrela */
   
   /* Tipografia */
-  --font-serif: 'Playfair Display', 'Times New Roman', serif;
-  --font-sans: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: 'Merriweather', Georgia, serif;
+  --font-sans: 'Merriweather', Georgia, serif;
   
   /* Breakpoints */
   --bp-mobile: 768px;
